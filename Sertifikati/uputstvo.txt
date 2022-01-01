@@ -1,1 +1,32 @@
+USERS:
+1) username: wcfservice, password: admin 
+2) usernames: korisnik1, korisnik2, korisnik3, nadzor1, nadzor2
+password: 1234
 
+GROUPS:
+1. Korisnik> korisnik1, korisnik2, korisnik3
+2. Nadzor> nadzor1, nadzor2
+_____________________________________________________________________________________________________________________________________________
+SERTIFIKATI:
+1) makecert -n "CN=CertAuth" -r -sv CertAuth.pvk CertAuth.cer
+
+2) makecert -sv WCFService.pvk -iv CertAuth.pvk -n "CN=wcfservice" -pe -ic CertAuth.cer WCFService.cer -sr localmachine -ss My -sky -exchange
+
+3) pvk2pfx.exe /pvk WCFService.pvk /pi 1234 /spc WCFService.cer /pfx WCFService.pfx
+
+4) 
+makecert -sv Korisnik1.pvk -iv CertAuth.pvk -n "CN=korisnik1,OU=Korisnik" -pe -ic CertAuth.cer Korisnik1.cer -sr localmachine -ss My -sky exchange
+makecert -sv Korisnik2.pvk -iv CertAuth.pvk -n "CN=korisnik2,OU=Korisnik" -pe -ic CertAuth.cer Korisnik2.cer -sr localmachine -ss My -sky exchange
+makecert -sv Korisnik3.pvk -iv CertAuth.pvk -n "CN=korisnik3,OU=Korisnik" -pe -ic CertAuth.cer Korisnik3.cer -sr localmachine -ss My -sky exchange
+makecert -sv Nadzor1.pvk -iv CertAuth.pvk -n "CN=nadzor1,OU=Nadzor" -pe -ic CertAuth.cer Nadzor1.cer -sr localmachine -ss My -sky exchange
+makecert -sv Nadzor2.pvk -iv CertAuth.pvk -n "CN=nadzor2,OU=Nadzor" -pe -ic CertAuth.cer Nadzor2.cer -sr localmachine -ss My -sky exchange
+
+5)
+pvk2pfx.exe /pvk Korisnik1.pvk /pi 1234 /spc Korisnik1.cer /pfx Korisnik1.pfx
+pvk2pfx.exe /pvk Korisnik2.pvk /pi 1234 /spc Korisnik2.cer /pfx Korisnik2.pfx
+pvk2pfx.exe /pvk Korisnik3.pvk /pi 1234 /spc Korisnik3.cer /pfx Korisnik3.pfx
+pvk2pfx.exe /pvk Nadzor1.pvk /pi 1234 /spc Nadzor1.cer /pfx Nadzor1.pfx
+pvk2pfx.exe /pvk Nadzor2.pvk /pi 1234 /spc Nadzor2.cer /pfx Nadzor2.pfx
+
+
+(*) Svuda je password 1234
