@@ -16,6 +16,18 @@ namespace ClientApp
         {
             factory = this.CreateChannel();
         }
+        public void TestCommunication()
+        {
+            try
+            {
+                factory.TestCommunication();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[TestCommunication] ERROR = {0}", e.Message);
+            }
+        }
+
 
         public void Dispose()
         {

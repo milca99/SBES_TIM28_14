@@ -16,7 +16,9 @@ namespace ClientApp
 
             using (WCFClient proxy = new WCFClient(binding, new EndpointAddress(new Uri(address))))
             {
-                //*
+                proxy.TestCommunication();
+                Console.WriteLine("TestCommunication() finished. Press <enter> to continue ...");
+                Console.ReadLine();
             }
 
             Console.ReadLine();

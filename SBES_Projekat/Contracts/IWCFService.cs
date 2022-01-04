@@ -9,7 +9,8 @@ namespace Contracts
     [ServiceContract]
     public interface IWCFService
     {
-
+        [OperationContract]
+        void TestCommunication();
 
     }
 }

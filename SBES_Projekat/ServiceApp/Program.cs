@@ -20,10 +20,10 @@ namespace ServiceApp
             ServiceHost host = new ServiceHost(typeof(WCFService));
             host.AddServiceEndpoint(typeof(IWCFService), binding, address);
 
-//*         
 
             host.Open();
             Console.WriteLine("WCFService is opened. Press <enter> to finish...");
+
             Console.ReadLine();
 
             host.Close();

@@ -12,9 +12,9 @@ namespace ServiceApp
 {
     public class WCFService : IWCFService
     {
-
-        
-
-        
+        public void TestCommunication()
+        {
+            Console.WriteLine("proba!");
+        }
     }
 }
