@@ -45,6 +45,23 @@ namespace ClientApp
             }
         }
 
+        public void SendComplaint(string user, string complaint)
+        {
+            try
+            {
+                factory.SendComplaint(user, complaint);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[SendComplaint] ERROR = {0}", e.Message);
+            }
+        }
+
+        public string GetCurrentUser()
+        {
+            return Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
+        }
+
         public void Dispose()
         {
             if (factory != null)

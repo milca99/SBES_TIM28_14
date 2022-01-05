@@ -26,10 +26,41 @@ namespace ClientApp
 
             using (WCFClient proxy = new WCFClient(binding, address))
             {
-                /// 1. Communication test
                 proxy.TestCommunication();
-                Console.WriteLine("TestCommunication() finished. Press <enter> to continue ...");
-                Console.ReadLine();
+                Menu(proxy);
+            }
+        }
+
+        private static void Menu(WCFClient proxy)
+        {
+            int option = -1;
+
+            do
+            {
+                Console.WriteLine("1. Send Complaint");
+                Console.WriteLine("0. Exit");
+
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+
+                Console.WriteLine("Choose option: ");
+                option = Convert.ToInt32(Console.ReadLine());
+
+                ExecuteAction(proxy, option);
+            } while (option != 0);
+        }
+
+        private static void ExecuteAction(WCFClient proxy, int option)
+        {
+            if (option == 1)
+            {
+                Console.Write("Enter your complaint: ");
+
+                string complaint = Console.ReadLine();
+                string user = proxy.GetCurrentUser();
+                
+                proxy.SendComplaint(user, complaint);
             }
         }
     }

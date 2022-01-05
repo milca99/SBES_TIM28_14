@@ -12,5 +12,7 @@ namespace Contracts
         [OperationContract]
         void TestCommunication();
 
+        [OperationContract]
+        void SendComplaint(string user, string complaint);
     }
 }
