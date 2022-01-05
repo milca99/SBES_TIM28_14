@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ServiceModel;
-using System.ServiceModel.Description;
 using Contracts;
-using System.IdentityModel.Policy;
+using System.ServiceModel.Security;
 using SecurityManager;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
 
 namespace ServiceApp
 {
@@ -14,19 +15,41 @@ namespace ServiceApp
     {
         static void Main(string[] args)
         {
-            NetTcpBinding binding = new NetTcpBinding();
-            string address = "net.tcp://localhost:9999/WCFService";
+            /// srvCertCN.SubjectName should be set to the service's username. .NET WindowsIdentity class provides information about Windows user running the given process
+            string srvCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
 
+            NetTcpBinding binding = new NetTcpBinding();
+            binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
+
+            string address = "net.tcp://localhost:9999/Receiver";
             ServiceHost host = new ServiceHost(typeof(WCFService));
             host.AddServiceEndpoint(typeof(IWCFService), binding, address);
 
+            ///Custom validation mode enables creation of a custom validator - CustomCertificateValidator
+            host.Credentials.ClientCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.Custom;
+            host.Credentials.ClientCertificate.Authentication.CustomCertificateValidator = new ServiceCertValidator();
 
-            host.Open();
-            Console.WriteLine("WCFService is opened. Press <enter> to finish...");
+            ///If CA doesn't have a CRL associated, WCF blocks every client because it cannot be validated
+            host.Credentials.ClientCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
 
-            Console.ReadLine();
+            ///Set appropriate service's certificate on the host. Use CertManager class to obtain the certificate based on the "srvCertCN"
+            host.Credentials.ServiceCertificate.Certificate = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, srvCertCN);
 
-            host.Close();
+            try
+            {
+                host.Open();
+                Console.WriteLine("WCFService is started.\nPress <enter> to stop ...");
+                Console.ReadLine();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[ERROR] {0}", e.Message);
+                Console.WriteLine("[StackTrace] {0}", e.StackTrace);
+            }
+            finally
+            {
+                host.Close();
+            }
         }
     }
 }
