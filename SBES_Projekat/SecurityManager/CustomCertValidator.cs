@@ -8,7 +8,7 @@ using Contracts;
 
 namespace SecurityManager
 {
-    public class ClientCertValidator : X509CertificateValidator
+    public class CustomCertValidator : X509CertificateValidator
     {
         /// <summary>
         /// Implementation of a custom certificate validation on the client side.
@@ -21,6 +21,21 @@ namespace SecurityManager
             if (certificate.Subject.Equals(certificate.Issuer))
             {
                 throw new Exception("Certificate is self-issued.");
+            }
+
+            List<string> bannedUsers = new List<string>();
+            string xml = @"C:\Users\Vladimir\Desktop\Projects\sbes-new\SBES_TIM28_14\SBES_Projekat\ServiceApp\banned_certs.xml";
+            bannedUsers = XMLHelper.ReadXml(xml);
+
+            Console.WriteLine("Banned users are: ");
+            foreach (string bannedUser in bannedUsers)
+            {
+                Console.WriteLine(bannedUser);
+                if (certificate.SubjectName.Name.Contains(string.Format("CN={0}", bannedUser)))
+                {
+                    Console.WriteLine($"{bannedUser} - this user has been banned!");
+                    throw new Exception("Certificate is forbidden.");
+                }
             }
         }
     }
