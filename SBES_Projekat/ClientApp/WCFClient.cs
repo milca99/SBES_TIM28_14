@@ -56,6 +56,17 @@ namespace ClientApp
                 Console.WriteLine("[SendComplaint] ERROR = {0}", e.Message);
             }
         }
+        public void BanTheUser(string username)
+        {
+            try
+            {
+                factory.BanTheUser(username);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[BanTheUser] ERROR = {0}", e.Message);
+            }
+        }
 
         public string GetCurrentUser()
         {

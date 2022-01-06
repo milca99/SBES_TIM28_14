@@ -6,6 +6,7 @@ using Contracts;
 using SecurityManager;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
+using System.Xml;
 
 namespace ServiceApp
 {
@@ -14,6 +15,7 @@ namespace ServiceApp
         public void TestCommunication()
         {
             Console.WriteLine("Communication established.");
+
         }
 
         public void SendComplaint(string user, string complaint)
@@ -28,6 +30,11 @@ namespace ServiceApp
             {
                 SaveComplaint(user, complaint);
             }
+        }
+
+        public void BanTheUser(string username)
+        {
+            XMLHelper.WriteXML(username);
         }
 
         private bool ComplaintContainsBannedWord(string complaint)

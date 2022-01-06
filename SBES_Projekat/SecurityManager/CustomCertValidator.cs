@@ -24,7 +24,7 @@ namespace SecurityManager
             }
 
             List<string> bannedUsers = new List<string>();
-            string xml = @"C:\Users\Vladimir\Desktop\Projects\sbes-new\SBES_TIM28_14\SBES_Projekat\ServiceApp\banned_certs.xml";
+            string xml = @"banned_certs.xml";
             bannedUsers = XMLHelper.ReadXml(xml);
 
             Console.WriteLine("Banned users are: ");

@@ -21,7 +21,17 @@ namespace Contracts
                 users.Add(node.InnerText);
             return users;
         }
-
+        public static void WriteXML(string username)
+        {
+            XmlDocument xmlDocument = new XmlDocument();
+            string name = @"banned_certs.xml";
+            xmlDocument.Load(name);
+            XmlElement childElement = xmlDocument.CreateElement("name");
+            childElement.InnerText = username;
+            XmlNode parentNode = xmlDocument.SelectSingleNode("user");
+            parentNode.InsertBefore(childElement, parentNode.FirstChild);
+            xmlDocument.Save(name);
+        }
 
     }
 }

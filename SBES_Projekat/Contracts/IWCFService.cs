@@ -14,5 +14,7 @@ namespace Contracts
 
         [OperationContract]
         void SendComplaint(string user, string complaint);
+        [OperationContract]
+        void BanTheUser(string username);
     }
 }
