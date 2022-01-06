@@ -38,6 +38,7 @@ namespace ClientApp
             do
             {
                 Console.WriteLine("1. Send Complaint");
+                Console.WriteLine("2. List banned complaints");
                 Console.WriteLine("0. Exit");
 
                 Console.WriteLine();
@@ -61,6 +62,34 @@ namespace ClientApp
                 string user = proxy.GetCurrentUser();
                 
                 proxy.SendComplaint(user, complaint);
+            }
+            else if(option==2)
+            {
+                int opt=-1;
+                Dictionary<string, string> proba = proxy.ListComplaintsWithBannedWords();
+                foreach(var v in proba)
+                {
+                    Console.WriteLine(v);
+                    
+                    Console.WriteLine("1. Ban user {0}", v.Key);
+                    Console.WriteLine("2. Forgive user {0}", v.Key);
+                    Console.WriteLine("Choose option: ");
+                    opt = Convert.ToInt32(Console.ReadLine());
+                    switch (opt)
+                    {
+                        case 1:
+                    
+                        proxy.BanTheUser(v.Key);
+                            break;
+
+                        case 2:
+                        proxy.Forgive();
+                            break;
+                        default:
+                            Console.WriteLine("Operation does not exist!");
+                            break;
+                    }
+                }
             }
         }
     }

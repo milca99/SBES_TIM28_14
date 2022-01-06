@@ -21,20 +21,38 @@ namespace ServiceApp
         public void SendComplaint(string user, string complaint)
         {
             Console.WriteLine($"User: {user} has sent following complaint: {complaint}.");
+            SaveComplaint(user, complaint);
 
-            if (ComplaintContainsBannedWord(complaint))
-            {
-                Console.Write($"Complaint contains banned word. {user} has been banned.");
-                // TODO: Add user to banned_certs.xml
-            } else
-            {
-                SaveComplaint(user, complaint);
-            }
         }
+
 
         public void BanTheUser(string username)
         {
             XMLHelper.WriteXML(username);
+        }
+        public void Forgive()
+        {
+            // nista, ili neki ispis dodati, ili eventualno da brise iz fajla
+        }
+
+        public Dictionary<string, string> ListComplaintsWithBannedWords()
+        {
+
+            Dictionary<string, string> listBanned = new Dictionary<string, string>();
+            foreach (var d in Database.complaints)
+            {
+                if(ComplaintContainsBannedWord(d.Value))
+                {
+                    listBanned.Add(d.Key, d.Value);
+                }
+                
+            }
+            if (listBanned.Count.Equals(0))
+            {
+                return null;
+            }
+            return listBanned;
+
         }
 
         private bool ComplaintContainsBannedWord(string complaint)
@@ -62,19 +80,8 @@ namespace ServiceApp
 
         private void SaveComplaint(string user, string complaint)
         {
-            try
-            {
-                string fileName = @"complaints.txt";
-
-                using (StreamWriter stream = new StreamWriter(fileName, true))
-                {
-                    stream.WriteLine($"{user},{complaint}");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("[SaveComplaint] ERROR = {0}", e.Message);
-            }
+            //List<Dictionary<string, string>> complaints = new List<Dictionary<string, string>>();
+            Database.complaints.Add(user, complaint);
         }
     }
 }

@@ -44,7 +44,41 @@ namespace ClientApp
                 Console.WriteLine("[TestCommunication] ERROR = {0}", e.Message);
             }
         }
+        public void BanTheUser(string username)
+        {
+            try
+            {
+                factory.TestCommunication();
+            }
+            catch (Exception e)
+            {
 
+                Console.WriteLine("[BanTheUser] ERROR = {0}", e.Message);
+            }
+        }
+        public void Forgive()
+        {
+            try
+            {
+                factory.Forgive();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("[Forgive] ERROR = {0}", e.Message);
+            }
+        }
+        public Dictionary<string, string> ListComplaintsWithBannedWords() //?
+        {
+            try
+            {
+                return factory.ListComplaintsWithBannedWords();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[ListComplaintsWithBannedWords] ERROR = {0}", e.Message);
+                return null;
+            }
+        }
         public void SendComplaint(string user, string complaint)
         {
             try
@@ -54,17 +88,6 @@ namespace ClientApp
             catch (Exception e)
             {
                 Console.WriteLine("[SendComplaint] ERROR = {0}", e.Message);
-            }
-        }
-        public void BanTheUser(string username)
-        {
-            try
-            {
-                factory.BanTheUser(username);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("[BanTheUser] ERROR = {0}", e.Message);
             }
         }
 

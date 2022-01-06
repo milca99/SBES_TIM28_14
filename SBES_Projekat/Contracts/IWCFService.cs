@@ -14,7 +14,13 @@ namespace Contracts
 
         [OperationContract]
         void SendComplaint(string user, string complaint);
+
+        [OperationContract]
+        Dictionary<string, string> ListComplaintsWithBannedWords();
         [OperationContract]
         void BanTheUser(string username);
+        [OperationContract]
+        void Forgive();
+
     }
 }
