@@ -23,6 +23,15 @@ namespace Contracts
         }
         public static void WriteXML(string username)
         {
+            // Checks if user is already banned
+            string fileName = @"banned_certs.xml";
+            var bannedUsers = ReadXml(fileName);
+
+            if (bannedUsers.Contains(username))
+            {
+                return;
+            }
+
             XmlDocument xmlDocument = new XmlDocument();
             string name = @"banned_certs.xml";
             xmlDocument.Load(name);

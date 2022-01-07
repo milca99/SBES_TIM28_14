@@ -48,7 +48,7 @@ namespace ClientApp
         {
             try
             {
-                factory.TestCommunication();
+                factory.BanTheUser(username);
             }
             catch (Exception e)
             {
@@ -67,7 +67,7 @@ namespace ClientApp
                 Console.WriteLine("[Forgive] ERROR = {0}", e.Message);
             }
         }
-        public Dictionary<string, string> ListComplaintsWithBannedWords() //?
+        public List<string> ListComplaintsWithBannedWords()
         {
             try
             {

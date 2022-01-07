@@ -66,24 +66,34 @@ namespace ClientApp
             else if(option==2)
             {
                 int opt=-1;
-                Dictionary<string, string> proba = proxy.ListComplaintsWithBannedWords();
-                foreach(var v in proba)
+                List<string> complaints = proxy.ListComplaintsWithBannedWords();
+
+                if (complaints == null)
                 {
-                    Console.WriteLine(v);
-                    
-                    Console.WriteLine("1. Ban user {0}", v.Key);
-                    Console.WriteLine("2. Forgive user {0}", v.Key);
-                    Console.WriteLine("Choose option: ");
+                    Console.WriteLine("There are not complaints with banned words");
+                    return;
+                }
+
+                foreach(var complaint in complaints)
+                {
+                    Console.WriteLine(complaint);
+
+                    string[] complaintInfo = complaint.Split(',');
+                    string user = complaintInfo[0];
+                    string complaintText = complaintInfo[1];
+
+                    Console.WriteLine("1. Ban user {0}", user);
+                    Console.WriteLine("2. Forgive user {0}", user);
+                    Console.Write("Choose option: ");
                     opt = Convert.ToInt32(Console.ReadLine());
                     switch (opt)
                     {
                         case 1:
-                    
-                        proxy.BanTheUser(v.Key);
+                            proxy.BanTheUser(user);
                             break;
 
                         case 2:
-                        proxy.Forgive();
+                            proxy.Forgive();
                             break;
                         default:
                             Console.WriteLine("Operation does not exist!");

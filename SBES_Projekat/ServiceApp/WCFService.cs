@@ -22,7 +22,6 @@ namespace ServiceApp
         {
             Console.WriteLine($"User: {user} has sent following complaint: {complaint}.");
             SaveComplaint(user, complaint);
-
         }
 
 
@@ -35,24 +34,31 @@ namespace ServiceApp
             // nista, ili neki ispis dodati, ili eventualno da brise iz fajla
         }
 
-        public Dictionary<string, string> ListComplaintsWithBannedWords()
+        public List<string> ListComplaintsWithBannedWords()
         {
+            try
+            {
+                List<string> bannedComplaints = new List<string>();
+                List<string> complaints = Database.GetComplaints();
 
-            Dictionary<string, string> listBanned = new Dictionary<string, string>();
-            foreach (var d in Database.complaints)
-            {
-                if(ComplaintContainsBannedWord(d.Value))
+                foreach (var complaint in complaints)
                 {
-                    listBanned.Add(d.Key, d.Value);
+                    if (ComplaintContainsBannedWord(complaint))
+                    {
+                        bannedComplaints.Add(complaint);
+                    }
+
                 }
-                
-            }
-            if (listBanned.Count.Equals(0))
+                if (bannedComplaints.Count.Equals(0))
+                {
+                    return null;
+                }
+                return bannedComplaints;
+            } catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return null;
             }
-            return listBanned;
-
         }
 
         private bool ComplaintContainsBannedWord(string complaint)
@@ -80,8 +86,19 @@ namespace ServiceApp
 
         private void SaveComplaint(string user, string complaint)
         {
-            //List<Dictionary<string, string>> complaints = new List<Dictionary<string, string>>();
-            Database.complaints.Add(user, complaint);
+            try
+            {
+                string fileName = @"complaints.txt";
+
+                using (StreamWriter stream = new StreamWriter(fileName, true))
+                {
+                    stream.WriteLine($"{user},{complaint}");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[SaveComplaint] ERROR = {0}", e.Message);
+            }
         }
     }
 }

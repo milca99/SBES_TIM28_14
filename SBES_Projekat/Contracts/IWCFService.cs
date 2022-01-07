@@ -16,7 +16,7 @@ namespace Contracts
         void SendComplaint(string user, string complaint);
 
         [OperationContract]
-        Dictionary<string, string> ListComplaintsWithBannedWords();
+        List<string> ListComplaintsWithBannedWords();
         [OperationContract]
         void BanTheUser(string username);
         [OperationContract]
