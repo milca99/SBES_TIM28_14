@@ -30,3 +30,16 @@ pvk2pfx.exe /pvk Nadzor2.pvk /pi 1234 /spc Nadzor2.cer /pfx Nadzor2.pfx
 
 
 (*) Svuda je password 1234
+_____________________________________________________________________________________________________________________________________________
+1) 
+makecert -sv Sign1.pvk -iv CertAuth.pvk -n "CN=korisnik1_sign" -pe -ic CertAuth.cer Sign1.cer -sr localmachine -ss My -sky signature
+makecert -sv Sign2.pvk -iv CertAuth.pvk -n "CN=korisnik2_sign" -pe -ic CertAuth.cer Sign2.cer -sr localmachine -ss My -sky signature
+makecert -sv Sign3.pvk -iv CertAuth.pvk -n "CN=korisnik3_sign" -pe -ic CertAuth.cer Sign3.cer -sr localmachine -ss My -sky signature
+
+2)
+pvk2pfx.exe /pvk Sign1.pvk /pi 1234 /spc Sign1.cer /pfx Sign1.pfx
+pvk2pfx.exe /pvk Sign2.pvk /pi 1234 /spc Sign2.cer /pfx Sign2.pfx
+pvk2pfx.exe /pvk Sign3.pvk /pi 1234 /spc Sign3.cer /pfx Sign3.pfx
+
+- pfx za svakog klijenta u personal, dodati svakog korisnika za svoj kljuc
+- cer u trusted people
