@@ -13,17 +13,13 @@ namespace Contracts
         void TestCommunication();
 
         [OperationContract]
-        [FaultContract(typeof(SecurityException))]
         void SendComplaint(string user, string complaint);
 
         [OperationContract]
-        [FaultContract(typeof(SecurityException))]
         List<string> ListComplaintsWithBannedWords();
         [OperationContract]
-        [FaultContract(typeof(SecurityException))]
         void BanTheUser(string username);
         [OperationContract]
-        [FaultContract(typeof(SecurityException))]
         void Forgive();
 
     }
