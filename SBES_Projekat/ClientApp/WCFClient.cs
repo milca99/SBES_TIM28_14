@@ -79,11 +79,11 @@ namespace ClientApp
                 return null;
             }
         }
-        public void SendComplaint(string user, string complaint)
+        public void SendComplaint(string user, string complaint, byte[] sign)
         {
             try
             {
-                factory.SendComplaint(user, complaint);
+                factory.SendComplaint(user, complaint, sign);
             }
             catch (Exception e)
             {

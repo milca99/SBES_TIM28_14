@@ -13,7 +13,7 @@ namespace Contracts
         void TestCommunication();
 
         [OperationContract]
-        void SendComplaint(string user, string complaint);
+        void SendComplaint(string user, string complaint, byte[] sign);
 
         [OperationContract]
         List<string> ListComplaintsWithBannedWords();

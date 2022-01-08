@@ -7,6 +7,7 @@ using SecurityManager;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
 using System.Xml;
+using System.ServiceModel;
 
 namespace ServiceApp
 {
@@ -18,10 +19,27 @@ namespace ServiceApp
 
         }
 
-        public void SendComplaint(string user, string complaint)
+        public void SendComplaint(string user, string complaint, byte[] sign)
         {
-            Console.WriteLine($"User: {user} has sent following complaint: {complaint}.");
-            SaveComplaint(user, complaint);
+            string clienName = Formatter.ParseName(ServiceSecurityContext.Current.PrimaryIdentity.Name);
+
+            string clientNameSign = clienName + "_sign";
+            X509Certificate2 certificate = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople,
+                StoreLocation.LocalMachine, clientNameSign);
+
+            /// Verify signature using SHA1 hash algorithm
+            if (DigitalSignature.Verify(complaint, HashAlgorithm.SHA1, sign, certificate))
+            {
+                Console.WriteLine($"User: {user} has sent following complaint: {complaint}.");
+                SaveComplaint(user, complaint);
+
+            }
+            else
+            {
+                Console.WriteLine("Sign is invalid");
+            }
+
+
         }
 
 
@@ -31,7 +49,7 @@ namespace ServiceApp
         }
         public void Forgive()
         {
-            // nista, ili neki ispis dodati, ili eventualno da brise iz fajla
+            // mozda dodati da brise korisnika iz xml fajla
         }
 
         public List<string> ListComplaintsWithBannedWords()

@@ -5,6 +5,7 @@ using System.Text;
 using System.ServiceModel;
 using System.Security.Cryptography.X509Certificates;
 using SecurityManager;
+using System.Security.Principal;
 
 namespace ClientApp
 {
@@ -60,8 +61,13 @@ namespace ClientApp
 
                 string complaint = Console.ReadLine();
                 string user = proxy.GetCurrentUser();
-                
-                proxy.SendComplaint(user, complaint);
+                string signCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name) + "_sign";
+                X509Certificate2 certificateSign = CertManager.GetCertificateFromStorage(StoreName.My,
+                    StoreLocation.LocalMachine, signCertCN);
+
+                byte[] signature = DigitalSignature.Create(complaint, HashAlgorithm.SHA1, certificateSign);
+
+                proxy.SendComplaint(user, complaint, signature);
             }
             else if(option==2)
             {
