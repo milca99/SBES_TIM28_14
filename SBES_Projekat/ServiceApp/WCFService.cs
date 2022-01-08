@@ -7,6 +7,8 @@ using SecurityManager;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
 using System.Xml;
+using System.Threading;
+using System.ServiceModel;
 
 namespace ServiceApp
 {
@@ -27,37 +29,71 @@ namespace ServiceApp
 
         public void BanTheUser(string username)
         {
-            XMLHelper.WriteXML(username);
+            if (Thread.CurrentPrincipal.IsInRole("Nadzor"))
+            {
+                XMLHelper.WriteXML(username);
+            }
+            else
+            {
+                string name = Thread.CurrentPrincipal.Identity.Name;
+                DateTime time = DateTime.Now;
+                string message = String.Format("Access is denied. User {0} try to call BanTheUser method (time : {1}). " +
+                    "For this method need to be member of group Nadzor.", name, time.TimeOfDay);
+                throw new FaultException<SecurityException>(new SecurityException(message));
+            }
         }
         public void Forgive()
         {
-            // nista, ili neki ispis dodati, ili eventualno da brise iz fajla
+            if (Thread.CurrentPrincipal.IsInRole("Nadzor"))
+            {
+                //
+            }
+            else
+            {
+                string name = Thread.CurrentPrincipal.Identity.Name;
+                DateTime time = DateTime.Now;
+                string message = String.Format("Access is denied. User {0} try to call Forgive method (time : {1}). " +
+                    "For this method need to be member of group Nadzor.", name, time.TimeOfDay);
+                throw new FaultException<SecurityException>(new SecurityException(message));
+            }
         }
 
         public List<string> ListComplaintsWithBannedWords()
         {
-            try
+            if (Thread.CurrentPrincipal.IsInRole("Nadzor"))
             {
-                List<string> bannedComplaints = new List<string>();
-                List<string> complaints = Database.GetComplaints();
-
-                foreach (var complaint in complaints)
+                try
                 {
-                    if (ComplaintContainsBannedWord(complaint))
+                    List<string> bannedComplaints = new List<string>();
+                    List<string> complaints = Database.GetComplaints();
+
+                    foreach (var complaint in complaints)
                     {
-                        bannedComplaints.Add(complaint);
-                    }
+                        if (ComplaintContainsBannedWord(complaint))
+                        {
+                            bannedComplaints.Add(complaint);
+                        }
 
+                    }
+                    if (bannedComplaints.Count.Equals(0))
+                    {
+                        return null;
+                    }
+                    return bannedComplaints;
                 }
-                if (bannedComplaints.Count.Equals(0))
+                catch (Exception e)
                 {
+                    Console.WriteLine(e.Message);
                     return null;
                 }
-                return bannedComplaints;
-            } catch (Exception e)
+            }
+            else
             {
-                Console.WriteLine(e.Message);
-                return null;
+                string name = Thread.CurrentPrincipal.Identity.Name;
+                DateTime time = DateTime.Now;
+                string message = String.Format("Access is denied. User {0} try to call ListComplaintsWithBannedWords method (time : {1}). " +
+                    "For this method need to be member of group Nadzor.", name, time.TimeOfDay);
+                throw new FaultException<SecurityException>(new SecurityException(message));
             }
         }
 

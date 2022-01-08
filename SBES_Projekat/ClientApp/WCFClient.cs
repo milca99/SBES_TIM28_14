@@ -50,6 +50,10 @@ namespace ClientApp
             {
                 factory.BanTheUser(username);
             }
+            catch (FaultException<SecurityException> e)
+            {
+                Console.WriteLine("Error while trying method BanTheUser : {0}", e.Detail.Message);
+            }
             catch (Exception e)
             {
 
@@ -62,7 +66,11 @@ namespace ClientApp
             {
                 factory.Forgive();
             }
-            catch(Exception e)
+            catch (FaultException<SecurityException> e)
+            {
+                Console.WriteLine("Error while trying method Forgive : {0}", e.Detail.Message);
+            }
+            catch (Exception e)
             {
                 Console.WriteLine("[Forgive] ERROR = {0}", e.Message);
             }
@@ -72,6 +80,11 @@ namespace ClientApp
             try
             {
                 return factory.ListComplaintsWithBannedWords();
+            }
+            catch (FaultException<SecurityException> e)
+            {
+                Console.WriteLine("Error while trying method ListComplaintsWithBannedWords : {0}", e.Detail.Message);
+                return null;
             }
             catch (Exception e)
             {
@@ -84,6 +97,10 @@ namespace ClientApp
             try
             {
                 factory.SendComplaint(user, complaint);
+            }
+            catch (FaultException<SecurityException> e)
+            {
+                Console.WriteLine("Error while trying method SendComplaint : {0}", e.Detail.Message);
             }
             catch (Exception e)
             {
