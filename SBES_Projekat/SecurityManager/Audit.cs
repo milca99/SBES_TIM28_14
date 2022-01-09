@@ -10,8 +10,8 @@ namespace SecurityManager
     {
 
         private static EventLog customLog = null;
-        const string SourceName = "SecurityManager.Audit";
-        const string LogName = ""; // promeniti
+        const string SourceName = ""; // dodati naziv
+        const string LogName = ""; // dodati naziv
 
         static Audit()
         {
