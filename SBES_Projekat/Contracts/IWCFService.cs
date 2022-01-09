@@ -20,7 +20,7 @@ namespace Contracts
         [OperationContract]
         void BanTheUser(string username);
         [OperationContract]
-        void Forgive();
+        void Forgive(string user);
 
     }
 }

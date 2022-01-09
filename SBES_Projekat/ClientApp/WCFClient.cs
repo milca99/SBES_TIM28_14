@@ -56,11 +56,11 @@ namespace ClientApp
                 Console.WriteLine("[BanTheUser] ERROR = {0}", e.Message);
             }
         }
-        public void Forgive()
+        public void Forgive(string user)
         {
             try
             {
-                factory.Forgive();
+                factory.Forgive(user);
             }
             catch(Exception e)
             {

@@ -99,7 +99,7 @@ namespace ClientApp
                             break;
 
                         case 2:
-                            proxy.Forgive();
+                            proxy.Forgive(user);
                             break;
                         default:
                             Console.WriteLine("Operation does not exist!");

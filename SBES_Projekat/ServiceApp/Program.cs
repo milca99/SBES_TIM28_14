@@ -8,6 +8,7 @@ using System.ServiceModel.Security;
 using SecurityManager;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
+using System.ServiceModel.Description;
 
 namespace ServiceApp
 {
@@ -34,6 +35,17 @@ namespace ServiceApp
 
             ///Set appropriate service's certificate on the host. Use CertManager class to obtain the certificate based on the "srvCertCN"
             host.Credentials.ServiceCertificate.Certificate = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, srvCertCN);
+
+            host.Description.Behaviors.Remove(typeof(ServiceDebugBehavior));
+            host.Description.Behaviors.Add(new ServiceDebugBehavior() { IncludeExceptionDetailInFaults = true });
+            ServiceSecurityAuditBehavior newAudit = new ServiceSecurityAuditBehavior();
+            newAudit.AuditLogLocation = AuditLogLocation.Application;
+           //newAudit.ServiceAuthorizationAuditLevel = AuditLevel.Success;
+           //proveriti
+            
+            
+            host.Description.Behaviors.Remove<ServiceSecurityAuditBehavior>();
+            host.Description.Behaviors.Add(newAudit);
 
             try
             {

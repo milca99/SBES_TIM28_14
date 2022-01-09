@@ -46,10 +46,19 @@ namespace ServiceApp
         public void BanTheUser(string username)
         {
             XMLHelper.WriteXML(username);
+
+
+            Audit.BanTheUserSuccess(username);
+                    
+            
         }
-        public void Forgive()
+        public void Forgive(string user)
         {
-            // mozda dodati da brise korisnika iz xml fajla
+            // dodati da brise iz xml fajla
+
+            Audit.ForgiveSuccess(user);
+
+
         }
 
         public List<string> ListComplaintsWithBannedWords()
