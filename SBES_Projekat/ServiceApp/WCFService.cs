@@ -21,25 +21,30 @@ namespace ServiceApp
 
         public void SendComplaint(string user, string complaint, byte[] sign)
         {
-            string clienName = Formatter.ParseName(ServiceSecurityContext.Current.PrimaryIdentity.Name);
-
-            string clientNameSign = clienName + "_sign";
-            X509Certificate2 certificate = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople,
-                StoreLocation.LocalMachine, clientNameSign);
-
-            /// Verify signature using SHA1 hash algorithm
-            if (DigitalSignature.Verify(complaint, HashAlgorithm.SHA1, sign, certificate))
+            try
             {
-                Console.WriteLine($"User: {user} has sent following complaint: {complaint}.");
-                SaveComplaint(user, complaint);
+                string clienName = Formatter.ParseName(ServiceSecurityContext.Current.PrimaryIdentity.Name);
 
-            }
-            else
+                string clientNameSign = clienName + "_sign";
+                X509Certificate2 certificate = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople,
+                    StoreLocation.LocalMachine, clientNameSign);
+
+                /// Verify signature using SHA1 hash algorithm
+                if (DigitalSignature.Verify(complaint, HashAlgorithm.SHA1, sign, certificate))
+                {
+                    Console.WriteLine($"User: {user} has sent following complaint: {complaint}.");
+                    SaveComplaint(user, complaint);
+
+                }
+                else
+                {
+                    Console.WriteLine("Sign is invalid");
+                }
+                Audit.SendComplaintSuccess(user);
+            } catch(Exception e)
             {
-                Console.WriteLine("Sign is invalid");
+                Console.WriteLine(e.Message);
             }
-
-
         }
 
 

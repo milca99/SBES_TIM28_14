@@ -123,4 +123,7 @@
   <data name="ForgiveSuccess" xml:space="preserve">
     <value>User {0} is forgiven.</value>
   </data>
+  <data name="SendComplaintSuccess" xml:space="preserve">
+    <value>User {0} has send complaint</value>
+  </data>
 </root>
