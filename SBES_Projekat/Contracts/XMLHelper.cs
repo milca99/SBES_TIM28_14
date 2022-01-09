@@ -42,7 +42,25 @@ namespace Contracts
             xmlDocument.Save(name);
         }
 
-      
+      public static void RemoveUser(string user)
+        {
+            XmlDocument doc = new XmlDocument();
+            string filename = @"banned_certs.xml";
+            string xmlFile = File.ReadAllText(filename);
+            doc.Load(filename);
+
+
+            XmlNodeList idNodes = doc.SelectNodes("user/name");
+            foreach (XmlNode node in idNodes)
+            {
+                if (node.InnerText.Equals(user))
+                {
+                    node.ParentNode.RemoveChild(node);
+
+                }
+            }
+            doc.Save(filename);
+        }
 
     }
 }

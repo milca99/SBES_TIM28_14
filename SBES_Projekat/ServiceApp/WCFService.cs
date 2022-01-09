@@ -60,7 +60,7 @@ namespace ServiceApp
         public void Forgive(string user)
         {
             // dodati da brise iz xml fajla
-
+            XMLHelper.RemoveUser(user);
             Audit.ForgiveSuccess(user);
 
 
