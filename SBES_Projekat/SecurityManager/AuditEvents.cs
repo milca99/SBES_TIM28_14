@@ -12,7 +12,6 @@ namespace SecurityManager
     {
         BanTheUserSuccess = 0,
         ForgiveSuccess = 1,
-        SendComplaintSuccess = 2
     }
 
     public class AuditEvents
@@ -53,13 +52,7 @@ namespace SecurityManager
                 return ResourceMgr.GetString(AuditEventTypes.ForgiveSuccess.ToString());
             }
         }
-        public static string SendComplaintSuccess
-        {
-            get
-            {
-                return ResourceMgr.GetString(AuditEventTypes.SendComplaintSuccess.ToString());
-            }
-        }
+
 
 
     }

@@ -40,7 +40,7 @@ namespace ServiceApp
                 {
                     Console.WriteLine("Sign is invalid");
                 }
-                Audit.SendComplaintSuccess(user);
+                
             } catch(Exception e)
             {
                 Console.WriteLine(e.Message);
@@ -101,7 +101,7 @@ namespace ServiceApp
 
                 foreach (string bannedWord in File.ReadLines(fileName, Encoding.UTF8))
                 {
-                    if (complaint.ToLower().Contains(bannedWord))
+                    if (complaint.ToLower().Contains(bannedWord.ToLower()))
                     {
                         return true;
                     }

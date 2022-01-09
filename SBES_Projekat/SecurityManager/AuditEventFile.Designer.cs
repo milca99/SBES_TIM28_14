@@ -77,14 +77,5 @@ namespace SecurityManager {
                 return ResourceManager.GetString("ForgiveSuccess", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User {0} has send complaint.
-        /// </summary>
-        internal static string SendComplaintSuccess {
-            get {
-                return ResourceManager.GetString("SendComplaintSuccess", resourceCulture);
-            }
-        }
     }
 }

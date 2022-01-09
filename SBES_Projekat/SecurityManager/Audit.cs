@@ -10,8 +10,8 @@ namespace SecurityManager
     {
 
         private static EventLog customLog = null;
-        const string SourceName = "Application"; // dodati naziv
-        const string LogName = "Application"; // dodati naziv
+        const string SourceName = "Application"; 
+        const string LogName = "Application"; 
 
         static Audit()
         {
@@ -69,24 +69,7 @@ namespace SecurityManager
             }
         }
 
-        public static void SendComplaintSuccess(string user)
-        {
-            if (customLog != null)
-            {
-                string SendComplaintSuccess =
-                    AuditEvents.SendComplaintSuccess;
-                string message = String.Format(SendComplaintSuccess,
-                    user);
-                customLog.WriteEntry(message);
-            }
-            else
-            {
-                throw new ArgumentException(string.Format("Error while trying to write event (eventid = {0}) to event log.",
-                    (int)AuditEventTypes.SendComplaintSuccess));
-            }
-        }
-
-
+       
 
 
         public void Dispose()

@@ -31,7 +31,8 @@ namespace SecurityManager
             foreach (string bannedUser in bannedUsers)
             {
                 Console.WriteLine(bannedUser);
-                if (certificate.SubjectName.Name.Contains(string.Format("CN={0}", bannedUser)))
+                if ((certificate.SubjectName.Name.Contains(string.Format("CN={0}", bannedUser)))
+                    || (certificate.IssuerName.Name.Contains(string.Format("CN={0}", bannedUser))))
                 {
                     Console.WriteLine($"{bannedUser} - this user has been banned!");
                     throw new Exception("Certificate is forbidden.");
