@@ -36,7 +36,7 @@ namespace ServiceApp
             ///Set appropriate service's certificate on the host. Use CertManager class to obtain the certificate based on the "srvCertCN"
             host.Credentials.ServiceCertificate.Certificate = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, srvCertCN);
 
-
+            //host.Authorization.ServiceAuthorizationManager = new MyAuthorizationManager();
 
             try
             {
