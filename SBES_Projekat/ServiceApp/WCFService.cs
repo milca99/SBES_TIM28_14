@@ -87,7 +87,7 @@ namespace ServiceApp
 
                 foreach (string bannedWord in File.ReadLines(fileName, Encoding.UTF8))
                 {
-                    if (complaint.Contains(bannedWord))
+                    if (complaint.ToLower().Contains(bannedWord))
                     {
                         return true;
                     }
